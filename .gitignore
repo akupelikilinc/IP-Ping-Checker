@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Excel ve veri dosyaları
+*.xlsx
+*.xls
+*.csv
+data/
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+.dockerignore
+
+# Geçici dosyalar
+*.tmp
+*.log
+*.bak
+
+# Kişisel dosyalar
+*.bat
+*.ps1
+*.bas
+

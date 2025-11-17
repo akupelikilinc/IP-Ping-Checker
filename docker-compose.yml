@@ -1,0 +1,71 @@
+services:
+  ip-ping-checker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ip-ping-checker
+    
+    # Ortam değişkenleri
+    environment:
+      PYTHONUNBUFFERED: 1
+      WORKDIR: /app/data
+      EXCEL_FILENAME: IP_Ping_Sonuclari.xlsx
+      TZ: Europe/Istanbul
+    
+    # Ping için gerekli capability (Linux'ta)
+    cap_add:
+      - NET_RAW
+    
+    # Port mapping - Web arayüzü için
+    ports:
+      - "5000:5000"
+    
+    # Volumes - veri kalıcılığı
+    volumes:
+      - ./data:/app/data              # Excel dosyaları
+      - ./logs:/app/logs              # Log dosyaları
+      - /etc/localtime:/etc/localtime:ro  # Zaman senkronizasyonu
+    
+    # Ağ ayarları
+    networks:
+      - ping-network
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Opsiyonel: Web Dashboard (Gelecek)
+  # web-dashboard:
+  #   image: nginx:latest
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - ./web:/usr/share/nginx/html
+  #   depends_on:
+  #     - ip-ping-checker
+  #   networks:
+  #     - ping-network
+
+networks:
+  ping-network:
+    driver: bridge
+
+volumes:
+  data:
+  logs:
